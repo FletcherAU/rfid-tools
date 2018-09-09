@@ -36,7 +36,11 @@ def check(id):
         return False
 
 def speaker(sound):
+    """Play requested sound, if found in config."""
+    if config["sounds"].get(sound, ''):
     os.system ("mpg123 -q {} &".format(config["sounds"][sound]))
+    else:
+        notify("Nonexistent sound '{}' requested".format(sound))
 
 def notify(message,door_activity=False):
     print(message)
