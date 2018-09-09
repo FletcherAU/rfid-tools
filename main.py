@@ -103,7 +103,7 @@ while True:
                     if "delayed" == keys[card]["groups"]:
                         unlock_door(s,30)
                     else:
-                        unlock_door()
+                        unlock_door(s)
                 elif card in members:
                     keys[card]["name"],card
                     notify(door_activity=True,id=card,name=keys[card]["name"],status="Known but blocked")
