@@ -2,6 +2,7 @@
 
 import serial
 import json
+import os
 import time
 import sys
 
@@ -39,51 +40,48 @@ def check(id):
 def speaker(sound):
     """Play requested sound, if found in config."""
     if config["sounds"].get(sound, ''):
-    os.system ("mpg123 -q {} &".format(config["sounds"][sound]))
+        os.system ("mpg123 -q {} &".format(config["sounds"][sound]))
     else:
         notify("Nonexistent sound '{}' requested".format(sound))
 
 def notify(message,door_activity=False):
     print(message)
 
-# load config
 
-config,keys,good_members,members = load_config()
+if __name__ == "__main__":
+    # Load config and initialise relay
+    config,keys,active_members,members = load_config()
+    s = relay_init()
 
-# initiate serial connection
+    # turn on relay
+    time.sleep(5)
+    s.write('B')
 
-s = relay_init()
+    notify("{} has started".format(config["name"]))
 
-# turn on relay
-
-time.sleep(5)
-s.write('B')
-
-notify("{} has started".format(config["name"]))
-
-# begin listening for RFID
-
-while True:
-    try:
-        while s.inWaiting() > 0:
-            data = s.readline()
-            if "RFID" in data:
-                card = data[-11:-1]
-                if card in good_members:
-                    notify("{} ({}) unlocked the door.".format(keys[card]["name"],card), True)
-                    speaker("granted")
-                    if len(keys[card]["groups"]) > 0:
-                        for x in keys[card]["groups"]
-                            notify("x")
-                    if "delayed" = keys[card]["groups"]:
-                        unlock_door(s,30)
+    # begin listening for RFID
+    while True:
+        try:
+            while s.inWaiting() > 0:
+                data = s.readline()
+                if "RFID" in data:
+                    card = data[-11:-1]
+                    if card in active_members:
+                        notify("{} ({}) unlocked the door.".format(keys[card]["name"],card), True)
+                        speaker("granted")
+                        if len(keys[card]["groups"]) > 0:
+                            for x in keys[card]["groups"]:
+                                notify("x")
+                        if "delayed" == keys[card]["groups"]:
+                            unlock_door(s,30)
+                        else:
+                            #unlock_door()
+                            pass
+                    elif card in members:
+                        notify("{} ({}) attempted to unlock the door but was denied because they are not part of the door group.".format(keys[card]["name"],card), True)
+                        speaker("denied")
                     else:
-                        unlock_door()
-                elif card in members:
-                    notify("{} ({}) attempted to unlock the door but was denied because they are not part of the door group.".format(keys[card]["name"],card), True)
-                    speaker("denied")
-                else:
-                    notify("Someone attempted to use an unknown key to open the door. Tag ID: {}".format(card), True)
-                    speaker("denied")
-    except (SystemExit, KeyboardInterrupt):
-        notify("{} is shutting down.".format(config["name"]))
+                        notify("Someone attempted to use an unknown key to open the door. Tag ID: {}".format(card), True)
+                        speaker("denied")
+        except (SystemExit, KeyboardInterrupt):
+            notify("{} is shutting down.".format(config["name"]))
