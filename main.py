@@ -82,7 +82,7 @@ s = relay_init()
 # turn on relay
 
 time.sleep(5)
-s.write('B'.decode())
+s.write('B'.encode())
 
 notify(door_activity=False,status="{} has started".format(config["name"]))
 
