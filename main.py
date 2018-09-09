@@ -115,3 +115,4 @@ while True:
                     speaker("denied")
     except (SystemExit, KeyboardInterrupt):
         notify(door_activity=False,status="{} is shutting down.".format(config["name"]))
+        break
