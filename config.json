@@ -1,0 +1,9 @@
+{"name":"DoorBot",
+ "default_time":5,
+ "serial":{"pointer":"/dev/ttyACM0","baudrate":9600},
+ "keys":"keys.json",
+ "slack":{"channel":"",
+          "token":""},
+ "sounds":{"granted":"/home/pi/granted.mp3",
+           "denied":"/home/pi/denied.mp3"}
+}
