@@ -50,7 +50,7 @@ def speaker(sound):
 
 def notify(door_activity=False,id=" ",name=" ",status=" "):
     if door_activity:
-        print("notifying slack"
+        print("notifying slack")
         attachments = [{"fallback":"An image of the front door",
                           "image_url":"http://space.artifactory.org.au/foyer.jpg"},
                        {"fallback":"An image of the carpark",
