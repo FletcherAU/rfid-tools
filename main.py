@@ -98,7 +98,7 @@ while True:
                     notify(door_activity=False,status="{} ({}) unlocked the door.".format(keys[card]["name"],card), True)
                     speaker("granted")
                     if len(keys[card]["groups"]) > 0:
-                        for x in keys[card]["groups"]
+                        for x in keys[card]["groups"]:
                             notify(door_activity=False,status=x)
                     if "delayed" = keys[card]["groups"]:
                         unlock_door(s,30)
