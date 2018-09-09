@@ -5,32 +5,33 @@ import json
 import time
 import sys
 
-# load configuration
-
 def load_config():
+    """Load member list from config.json"""
     with open("config.json","r") as c, open("keys.json","r") as k:
         config = json.load(c)
         keys = json.load(k)
-        good_members = []
+        active_members = []
         members = []
         for x in keys:
             if keys[x]["door"] == 1:
-                good_members.append(keys[x["id"]])
+                active_members.append(keys[x["id"]])
             members.append(keys[x["id"]])
-    return (config,keys,good_members,members)
+    return (config,keys,active_members,members)
 
-# initialise relay
 
 def relay_init():
+    """Initialise relays using serial settings from config"""
     return serial.Serial(config["serial"]["pointer"], baudrate=config["serial"]["baudrate"])
 
 def unlock_door(relays, t=5):
+    """Unlock door for t seconds"""
     relays.write('A')
     time.sleep(t)
     relays.write('a')
 
 def check(id):
-    if id in good_members:
+    """Check whether member ID is active"""
+    if id in active_members:
         return True
     else:
         return False
