@@ -100,7 +100,7 @@ while True:
                     if len(keys[card]["groups"]) > 0:
                         for x in keys[card]["groups"]:
                             notify(door_activity=False,status=x)
-                    if "delayed" = keys[card]["groups"]:
+                    if "delayed" == keys[card]["groups"]:
                         unlock_door(s,30)
                     else:
                         unlock_door()
