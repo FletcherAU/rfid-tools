@@ -54,8 +54,8 @@ def notify(door_activity=False,id=" ",name=" ",status=" "):
         attachments = [{"fallback":"An image of the front door",
                           "image_url":"http://space.artifactory.org.au/foyer.jpg"},
                        {"fallback":"An image of the carpark",
-                          "image_url":"http://space.artifactory.org.au/carpark.jpg"}]
-        fields = [{"title":"Name",
+                          "image_url":"http://space.artifactory.org.au/carpark.jpg",
+                          "fields":[{"title":"Name",
                    "value":name,
                    "short":True},
                   {"title":"RFID",
@@ -64,7 +64,8 @@ def notify(door_activity=False,id=" ",name=" ",status=" "):
                   {"title":"Status",
                    "value":status,
                    "short":True}]
-        slack.api_call("chat.postMessage",channel=config["slack"]["channel"],text="Someone interacted with the door",attachments=attachments,fields=fields,)
+}]
+        slack.api_call("chat.postMessage",channel=config["slack"]["channel"],text="Someone interacted with the door",attachments=attachments,fields=fields)
     else:
         print(status)
 
@@ -105,16 +106,16 @@ while True:
                         unlock_door(s,30)
                     else:
                         unlock_door(s)
-                    notify(door_activity=True,status="Unlocked",id=card,name=keys[card]["name])
+                    notify(door_activity=True,status="Unlocked",id=card,name=keys[card]["name"])
                 elif card in members:
                     keys[card]["name"],card
+                    speaker("denied")
                     notify(door_activity=True,id=card,name=keys[card]["name"],status="Known but blocked")
                     notify(door_activity=False,status="{} ({}) attempted to unlock the door but was denied because they are not part of the door group.".format(keys[card]["name"],card))
-                    speaker("denied")
                 else:
+                    speaker("denied")
                     notify(door_activity=True,id=card,name="Unknown",status="An unknown card was used, new cards can be added via TidyHQ")
                     notify(door_activity=False,status="Someone attempted to use an unknown key to open the door. Tag ID: {}".format(card))
-                    speaker("denied")
     except (SystemExit, KeyboardInterrupt):
         notify(door_activity=False,status="{} is shutting down.".format(config["name"]))
         break
