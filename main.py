@@ -59,13 +59,15 @@ def notify(door_activity=False,id=" ",name=" ",status=" "):
                    "value":name,
                    "short":True},
                   {"title":"RFID",
-                   "value":id,
+                   "value":"{}/{}".format(int(id,16),id),
                    "short":True},
                   {"title":"Status",
                    "value":status,
-                   "short":True}]
-}]
-        slack.api_call("chat.postMessage",channel=config["slack"]["channel"],text="Someone interacted with the door",attachments=attachments)
+                   "short":True}]}]
+        try:
+            slack.api_call("chat.postMessage",channel=config["slack"]["channel"],text="Someone interacted with the door",attachments=attachments)
+        except:
+            print("couldn't reach slack")
     else:
         print(status)
 
