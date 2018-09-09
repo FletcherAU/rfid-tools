@@ -95,7 +95,7 @@ while True:
             if "RFID" in data:
                 card = data[-11:-1]
                 if card in good_members:
-                    notify(door_activity=False,status="{} ({}) unlocked the door.".format(keys[card]["name"],card), True)
+                    notify(door_activity=False,status="{} ({}) unlocked the door.".format(keys[card]["name"],card))
                     speaker("granted")
                     if len(keys[card]["groups"]) > 0:
                         for x in keys[card]["groups"]:
@@ -107,11 +107,11 @@ while True:
                 elif card in members:
                     keys[card]["name"],card
                     notify(door_activity=True,id=card,name=keys[card]["name"],status="Known but blocked")
-                    notify(door_activity=False,status="{} ({}) attempted to unlock the door but was denied because they are not part of the door group.".format(keys[card]["name"],card), True)
+                    notify(door_activity=False,status="{} ({}) attempted to unlock the door but was denied because they are not part of the door group.".format(keys[card]["name"],card))
                     speaker("denied")
                 else:
                     notify(door_activity=True,id=card,name="Unknown",status="An unknown card was used, new cards can be added via TidyHQ")
-                    notify(door_activity=False,status="Someone attempted to use an unknown key to open the door. Tag ID: {}".format(card), True)
+                    notify(door_activity=False,status="Someone attempted to use an unknown key to open the door. Tag ID: {}".format(card))
                     speaker("denied")
     except (SystemExit, KeyboardInterrupt):
         notify(door_activity=False,status="{} is shutting down.".format(config["name"]))
