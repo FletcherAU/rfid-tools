@@ -65,7 +65,7 @@ def notify(door_activity=False,id=" ",name=" ",status=" "):
                    "value":status,
                    "short":True}]
 }]
-        slack.api_call("chat.postMessage",channel=config["slack"]["channel"],text="Someone interacted with the door",attachments=attachments,fields=fields)
+        slack.api_call("chat.postMessage",channel=config["slack"]["channel"],text="Someone interacted with the door",attachments=attachments)
     else:
         print(status)
 
