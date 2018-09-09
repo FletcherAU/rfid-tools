@@ -50,6 +50,7 @@ def speaker(sound):
 
 def notify(door_activity=False,id=" ",name=" ",status=" "):
     if door_activity:
+        print("notifying slack"
         attachments = [{"fallback":"An image of the front door",
                           "image_url":"http://space.artifactory.org.au/foyer.jpg"},
                        {"fallback":"An image of the carpark",
@@ -104,6 +105,7 @@ while True:
                         unlock_door(s,30)
                     else:
                         unlock_door(s)
+                    notify(door_activity=True,status="Unlocked",id=card,name=keys[card]["name])
                 elif card in members:
                     keys[card]["name"],card
                     notify(door_activity=True,id=card,name=keys[card]["name"],status="Known but blocked")
